@@ -367,7 +367,7 @@ class QueryStep(OpenSearchStep):
         results['took'] = [
             float(query_response['took']) for query_response in query_responses
         ]
-        results['memory_kb'] = get_cache_size_in_kb(self.endpoint, 80)
+        results['memory_kb'] = get_cache_size_in_kb(self.endpoint, self.port)
 
         if self.calculate_recall:
             ids = [[int(hit['_id'])
@@ -534,15 +534,18 @@ def get_cache_size_in_kb(endpoint, port):
         size of cache in kilobytes
     """
     response = requests.get('http://' + endpoint + ':' + str(port) +
-                            '/_plugins/_knn/stats',
+                            '/_cluster/stats',
                             headers={'content-type': 'application/json'})
     stats = response.json()
 
-    keys = stats['nodes'].keys()
+    """keys = stats['nodes'].keys()
 
     total_used = 0
     for key in keys:
         total_used += int(stats['nodes'][key]['graph_memory_usage'])
+        """
+    total_used = int(stats['nodes']['jvm']['mem']['heap_used_in_bytes'])
+    total_used = total_used / 1024
     return total_used
 
 
