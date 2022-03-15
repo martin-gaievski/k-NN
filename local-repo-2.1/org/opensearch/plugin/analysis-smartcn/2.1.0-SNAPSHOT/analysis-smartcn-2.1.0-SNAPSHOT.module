@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "analysis-smartcn",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-smartcn",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-smartcn-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-smartcn-2.1.0-SNAPSHOT.jar",
+          "size": 10625,
+          "sha512": "3e351f046e85b221f199dbd7e7b77494f51f39a9faf13c43be061cd23ca0ec361f1b30dcfe437925f39c1a87b9cee8578fd82460bd26128d985ba09987a85cdb",
+          "sha256": "2c38c04f2a3c40c76dcc47174c218fae407e8403026605f6c01be0c7c1ecbfaf",
+          "sha1": "d1e9acfd96451ef991e0a88fbb0b9a566e9ba09f",
+          "md5": "6e34a812f7828ed381db70e7a3bdf231"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-smartcn",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-smartcn-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-smartcn-2.1.0-SNAPSHOT.jar",
+          "size": 10625,
+          "sha512": "3e351f046e85b221f199dbd7e7b77494f51f39a9faf13c43be061cd23ca0ec361f1b30dcfe437925f39c1a87b9cee8578fd82460bd26128d985ba09987a85cdb",
+          "sha256": "2c38c04f2a3c40c76dcc47174c218fae407e8403026605f6c01be0c7c1ecbfaf",
+          "sha1": "d1e9acfd96451ef991e0a88fbb0b9a566e9ba09f",
+          "md5": "6e34a812f7828ed381db70e7a3bdf231"
+        }
+      ]
+    }
+  ]
+}

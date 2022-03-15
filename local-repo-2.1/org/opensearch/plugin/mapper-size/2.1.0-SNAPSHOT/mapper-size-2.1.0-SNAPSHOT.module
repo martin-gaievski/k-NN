@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "mapper-size",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "mapper-size-2.1.0-SNAPSHOT.jar",
+          "url": "mapper-size-2.1.0-SNAPSHOT.jar",
+          "size": 9868,
+          "sha512": "37c02adba2bc832782efda0008fc57a74a03653627357d8d5957cc2e6344d13cf7de48cd746ca4dcafcb154a79ed07b8e6ed39e30f5ad1dc47e249752adeba9e",
+          "sha256": "e8e61d6d3fe84ae79e7c2c8433fdc7f408d40d5530dc8b00f458dd7b9d309ff7",
+          "sha1": "8e0cdb3ae0fdcb13ca17e1fd2039a13ade05b625",
+          "md5": "b94fc25d560010a22b4c58b450bd057d"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mapper-size-2.1.0-SNAPSHOT.jar",
+          "url": "mapper-size-2.1.0-SNAPSHOT.jar",
+          "size": 9868,
+          "sha512": "37c02adba2bc832782efda0008fc57a74a03653627357d8d5957cc2e6344d13cf7de48cd746ca4dcafcb154a79ed07b8e6ed39e30f5ad1dc47e249752adeba9e",
+          "sha256": "e8e61d6d3fe84ae79e7c2c8433fdc7f408d40d5530dc8b00f458dd7b9d309ff7",
+          "sha1": "8e0cdb3ae0fdcb13ca17e1fd2039a13ade05b625",
+          "md5": "b94fc25d560010a22b4c58b450bd057d"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "analysis-common",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "analysis-common-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-common-2.1.0-SNAPSHOT.jar",
+          "size": 192360,
+          "sha512": "ee0a198df998f9d146d5fe53f3357ea4646ad5692c64b53dbfbc99b49fd610f575948a5edbb36f00db7f85962db85bd4279f0fda3200a7c62ee4c0fab422a125",
+          "sha256": "76668e1be09ac896e6fa5290986afbcf9e4ef5f2f5589d5c9635906704fd5f0f",
+          "sha1": "6724fc648070dc115c5253fedca8ab651508eb5f",
+          "md5": "0adab5823bbc03994f35925bd7924975"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "analysis-common-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-common-2.1.0-SNAPSHOT.jar",
+          "size": 192360,
+          "sha512": "ee0a198df998f9d146d5fe53f3357ea4646ad5692c64b53dbfbc99b49fd610f575948a5edbb36f00db7f85962db85bd4279f0fda3200a7c62ee4c0fab422a125",
+          "sha256": "76668e1be09ac896e6fa5290986afbcf9e4ef5f2f5589d5c9635906704fd5f0f",
+          "sha1": "6724fc648070dc115c5253fedca8ab651508eb5f",
+          "md5": "0adab5823bbc03994f35925bd7924975"
+        }
+      ]
+    }
+  ]
+}

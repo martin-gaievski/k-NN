@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "store-smb",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "store-smb-2.1.0-SNAPSHOT.jar",
+          "url": "store-smb-2.1.0-SNAPSHOT.jar",
+          "size": 11461,
+          "sha512": "d582b7504c1b971df279f36429334f7c98ad2d0527983c08bdcb4f2af814254754dc9b5b0965dc0e071597400187e0bddbd74a75708e5fa9aa711caa010a5190",
+          "sha256": "b03ff55976e45d274f171ae3f39efbdde269ee73eeda708a5360e78a60f05e8b",
+          "sha1": "dc1a702f9605bf3c4216260c6be7c1ce4468fe5a",
+          "md5": "b1dd8c9154e62f3c8824581002a50d71"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "store-smb-2.1.0-SNAPSHOT.jar",
+          "url": "store-smb-2.1.0-SNAPSHOT.jar",
+          "size": 11461,
+          "sha512": "d582b7504c1b971df279f36429334f7c98ad2d0527983c08bdcb4f2af814254754dc9b5b0965dc0e071597400187e0bddbd74a75708e5fa9aa711caa010a5190",
+          "sha256": "b03ff55976e45d274f171ae3f39efbdde269ee73eeda708a5360e78a60f05e8b",
+          "sha1": "dc1a702f9605bf3c4216260c6be7c1ce4468fe5a",
+          "md5": "b1dd8c9154e62f3c8824581002a50d71"
+        }
+      ]
+    }
+  ]
+}

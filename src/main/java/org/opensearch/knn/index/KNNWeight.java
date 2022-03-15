@@ -77,9 +77,9 @@ public class KNNWeight extends Weight {
         return Explanation.match(1.0f, "No Explanation");
     }
 
-    @Override
+    /*@Override
     public void extractTerms(Set<Term> terms) {
-    }
+    }*/
 
     @Override
     public Scorer scorer(LeafReaderContext context) throws IOException {

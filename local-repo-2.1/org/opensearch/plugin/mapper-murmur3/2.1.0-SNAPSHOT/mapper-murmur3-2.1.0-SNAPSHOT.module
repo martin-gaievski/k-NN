@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "mapper-murmur3",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "mapper-murmur3-2.1.0-SNAPSHOT.jar",
+          "url": "mapper-murmur3-2.1.0-SNAPSHOT.jar",
+          "size": 12613,
+          "sha512": "e14297f27751f79ef4da72faa7f07895b157c16284c7b07e87599403af7caf5f336272e957c89ede493425354b39cd1cd27dbc2fb0b3b2bd4eba51835cbb2c8d",
+          "sha256": "7f3a2b14a00b8e4ae878180c68629ca31b775bcfe64233cd793e45131fd9ce93",
+          "sha1": "4cf325b4bd6f91a27134b5e583b1a7ee796ed550",
+          "md5": "ccab54822441bd88e055305c92c87dd5"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mapper-murmur3-2.1.0-SNAPSHOT.jar",
+          "url": "mapper-murmur3-2.1.0-SNAPSHOT.jar",
+          "size": 12613,
+          "sha512": "e14297f27751f79ef4da72faa7f07895b157c16284c7b07e87599403af7caf5f336272e957c89ede493425354b39cd1cd27dbc2fb0b3b2bd4eba51835cbb2c8d",
+          "sha256": "7f3a2b14a00b8e4ae878180c68629ca31b775bcfe64233cd793e45131fd9ce93",
+          "sha1": "4cf325b4bd6f91a27134b5e583b1a7ee796ed550",
+          "md5": "ccab54822441bd88e055305c92c87dd5"
+        }
+      ]
+    }
+  ]
+}

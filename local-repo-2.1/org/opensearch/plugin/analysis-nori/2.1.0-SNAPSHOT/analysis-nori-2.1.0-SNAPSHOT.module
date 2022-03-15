@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "analysis-nori",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-nori",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-nori-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-nori-2.1.0-SNAPSHOT.jar",
+          "size": 13508,
+          "sha512": "a6f73098b83dbe63f4386b98a93c0454637ba7379db44d9a8301ed06ef1078f44f3076627b2b19d5908799f141a3a2c8d45fa2297cd03da5fd780cf5038db041",
+          "sha256": "32d03e7219f4983faeda1bae38aae13b6daf6f6d881f1c7402c8353e4c25fc86",
+          "sha1": "4e1d3dc5c91e2856988c324cb57863a6fffe1c11",
+          "md5": "a0f881a348759477e2c6f05ab4048e12"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-nori",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-nori-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-nori-2.1.0-SNAPSHOT.jar",
+          "size": 13508,
+          "sha512": "a6f73098b83dbe63f4386b98a93c0454637ba7379db44d9a8301ed06ef1078f44f3076627b2b19d5908799f141a3a2c8d45fa2297cd03da5fd780cf5038db041",
+          "sha256": "32d03e7219f4983faeda1bae38aae13b6daf6f6d881f1c7402c8353e4c25fc86",
+          "sha1": "4e1d3dc5c91e2856988c324cb57863a6fffe1c11",
+          "md5": "a0f881a348759477e2c6f05ab4048e12"
+        }
+      ]
+    }
+  ]
+}

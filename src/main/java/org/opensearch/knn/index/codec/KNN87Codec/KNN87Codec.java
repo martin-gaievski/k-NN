@@ -5,6 +5,7 @@
 
 package org.opensearch.knn.index.codec.KNN87Codec;
 
+import org.apache.lucene.codecs.KnnVectorsFormat;
 import org.opensearch.knn.index.codec.KNN80Codec.KNN80CompoundFormat;
 import org.opensearch.knn.index.codec.KNN80Codec.KNN80DocValuesFormat;
 import org.apache.logging.log4j.LogManager;
@@ -124,5 +125,10 @@ public final class KNN87Codec extends Codec {
     @Override
     public PointsFormat pointsFormat() {
         return getDelegatee().pointsFormat();
+    }
+
+    @Override
+    public KnnVectorsFormat knnVectorsFormat() {
+        return getDelegatee().knnVectorsFormat();
     }
 }

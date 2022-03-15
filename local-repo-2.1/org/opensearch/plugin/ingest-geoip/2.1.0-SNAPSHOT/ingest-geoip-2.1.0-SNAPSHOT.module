@@ -1,0 +1,168 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "ingest-geoip",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.maxmind.geoip2",
+          "module": "geoip2",
+          "version": {
+            "requires": "2.16.1"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-annotations",
+          "version": {
+            "requires": "2.12.6"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-databind",
+          "version": {
+            "requires": "2.12.6"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.maxmind.db",
+          "module": "maxmind-db",
+          "version": {
+            "requires": "2.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "ingest-geoip-2.1.0-SNAPSHOT.jar",
+          "url": "ingest-geoip-2.1.0-SNAPSHOT.jar",
+          "size": 27405,
+          "sha512": "034e02452f3eac03cd7120757259dfcd7b3390e4c0ff55234c40ae78825990f1f33ce268cf86ffaeb234a68c27297eea930fe1e042713cac27f7617d49e5ddbb",
+          "sha256": "40f03be8c8f58d9faf860674a8c2144d051b1eafc15a81945c753057ecaf24a4",
+          "sha1": "613382da276fd882f5cb644bdacbee8d63cc4fae",
+          "md5": "f63d2d60be944d7f37214404686ea763"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.maxmind.geoip2",
+          "module": "geoip2",
+          "version": {
+            "requires": "2.16.1"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-annotations",
+          "version": {
+            "requires": "2.12.6"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-databind",
+          "version": {
+            "requires": "2.12.6"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        },
+        {
+          "group": "com.maxmind.db",
+          "module": "maxmind-db",
+          "version": {
+            "requires": "2.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "ingest-geoip-2.1.0-SNAPSHOT.jar",
+          "url": "ingest-geoip-2.1.0-SNAPSHOT.jar",
+          "size": 27405,
+          "sha512": "034e02452f3eac03cd7120757259dfcd7b3390e4c0ff55234c40ae78825990f1f33ce268cf86ffaeb234a68c27297eea930fe1e042713cac27f7617d49e5ddbb",
+          "sha256": "40f03be8c8f58d9faf860674a8c2144d051b1eafc15a81945c753057ecaf24a4",
+          "sha1": "613382da276fd882f5cb644bdacbee8d63cc4fae",
+          "md5": "f63d2d60be944d7f37214404686ea763"
+        }
+      ]
+    }
+  ]
+}

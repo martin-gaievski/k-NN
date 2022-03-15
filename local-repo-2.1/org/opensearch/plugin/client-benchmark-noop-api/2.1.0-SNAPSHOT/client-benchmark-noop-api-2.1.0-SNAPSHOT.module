@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "client-benchmark-noop-api",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "client-benchmark-noop-api-2.1.0-SNAPSHOT.jar",
+          "url": "client-benchmark-noop-api-2.1.0-SNAPSHOT.jar",
+          "size": 18192,
+          "sha512": "14247a8435cfb54cb508d7d3292d41181921f1dd94fc570b01f6cc1c113012c09c04bf272b6ac186d862609e7e32620b65a27235aa4d1e3b87a6d00c2ff8f64e",
+          "sha256": "92cad677ed54c55d42f56a4cacad9a6e1c3fb571e8897cbca57520ab401e5f2f",
+          "sha1": "d8e85f6e647232a8d4527322790aa55d813ea831",
+          "md5": "40cfd56f117dd4bc26da2955fc2831f8"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "client-benchmark-noop-api-2.1.0-SNAPSHOT.jar",
+          "url": "client-benchmark-noop-api-2.1.0-SNAPSHOT.jar",
+          "size": 18192,
+          "sha512": "14247a8435cfb54cb508d7d3292d41181921f1dd94fc570b01f6cc1c113012c09c04bf272b6ac186d862609e7e32620b65a27235aa4d1e3b87a6d00c2ff8f64e",
+          "sha256": "92cad677ed54c55d42f56a4cacad9a6e1c3fb571e8897cbca57520ab401e5f2f",
+          "sha1": "d8e85f6e647232a8d4527322790aa55d813ea831",
+          "md5": "40cfd56f117dd4bc26da2955fc2831f8"
+        }
+      ]
+    }
+  ]
+}

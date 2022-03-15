@@ -1,0 +1,92 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "ingest-common",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.opensearch",
+          "module": "opensearch-grok",
+          "version": {
+            "requires": "2.1.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.opensearch",
+          "module": "opensearch-dissect",
+          "version": {
+            "requires": "2.1.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ingest-common-2.1.0-SNAPSHOT.jar",
+          "url": "ingest-common-2.1.0-SNAPSHOT.jar",
+          "size": 120958,
+          "sha512": "6bcc587ff39f4523384451463efef8ce35c384f8b73cf55b380d125aeb26d3482abbdfea5c2f4a45c7e2b90ba6cafabdeac3a48a29f610c878b73c2b80c6da7d",
+          "sha256": "1656335d198975d705e57dfae4da92e6263731396eb6c3c1a13ce13d0b245ff7",
+          "sha1": "808a2a62e4f7dacaafddb54410f2b84e292a4a27",
+          "md5": "1614cd20e8953f04bd21f5c270633850"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.opensearch",
+          "module": "opensearch-grok",
+          "version": {
+            "requires": "2.1.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.opensearch",
+          "module": "opensearch-dissect",
+          "version": {
+            "requires": "2.1.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ingest-common-2.1.0-SNAPSHOT.jar",
+          "url": "ingest-common-2.1.0-SNAPSHOT.jar",
+          "size": 120958,
+          "sha512": "6bcc587ff39f4523384451463efef8ce35c384f8b73cf55b380d125aeb26d3482abbdfea5c2f4a45c7e2b90ba6cafabdeac3a48a29f610c878b73c2b80c6da7d",
+          "sha256": "1656335d198975d705e57dfae4da92e6263731396eb6c3c1a13ce13d0b245ff7",
+          "sha1": "808a2a62e4f7dacaafddb54410f2b84e292a4a27",
+          "md5": "1614cd20e8953f04bd21f5c270633850"
+        }
+      ]
+    }
+  ]
+}

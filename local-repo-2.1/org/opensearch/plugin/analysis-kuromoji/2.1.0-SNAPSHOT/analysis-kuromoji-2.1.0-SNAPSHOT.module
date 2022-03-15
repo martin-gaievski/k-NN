@@ -1,0 +1,90 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "analysis-kuromoji",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-kuromoji",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-kuromoji-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-kuromoji-2.1.0-SNAPSHOT.jar",
+          "size": 18010,
+          "sha512": "3496878e99eefb88d52e045f4310bbd54af947c2ecaaad76fd38c09fe21fe5efe5813f00270e1a96ac0758ae1a1a9fa01735f1971984b2a1cd6343df1737870c",
+          "sha256": "0c1428b572e2cb2d61a23463c2a411466127042a399bba041c41ef1b748b09c2",
+          "sha1": "a652f037e22d4a9575addcf5840257bfa0731df4",
+          "md5": "15d8fc09904e438491e03528ee7ab6af"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.lucene",
+          "module": "lucene-analysis-kuromoji",
+          "version": {
+            "requires": "9.0.0"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "*"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "analysis-kuromoji-2.1.0-SNAPSHOT.jar",
+          "url": "analysis-kuromoji-2.1.0-SNAPSHOT.jar",
+          "size": 18010,
+          "sha512": "3496878e99eefb88d52e045f4310bbd54af947c2ecaaad76fd38c09fe21fe5efe5813f00270e1a96ac0758ae1a1a9fa01735f1971984b2a1cd6343df1737870c",
+          "sha256": "0c1428b572e2cb2d61a23463c2a411466127042a399bba041c41ef1b748b09c2",
+          "sha1": "a652f037e22d4a9575addcf5840257bfa0731df4",
+          "md5": "15d8fc09904e438491e03528ee7ab6af"
+        }
+      ]
+    }
+  ]
+}

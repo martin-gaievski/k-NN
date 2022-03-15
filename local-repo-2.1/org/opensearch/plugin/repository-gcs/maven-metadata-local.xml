@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.opensearch.plugin</groupId>
+  <artifactId>repository-gcs</artifactId>
+  <versioning>
+    <latest>2.1.0-SNAPSHOT</latest>
+    <versions>
+      <version>2.1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20220309190918</lastUpdated>
+  </versioning>
+</metadata>

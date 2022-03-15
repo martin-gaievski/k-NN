@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.opensearch.plugin",
+    "module": "aggs-matrix-stats-client",
+    "version": "2.1.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "aggs-matrix-stats-client-2.1.0-SNAPSHOT.jar",
+          "url": "aggs-matrix-stats-client-2.1.0-SNAPSHOT.jar",
+          "size": 57354,
+          "sha512": "bd92721c84eb5477106eba937d9e23ec1ea9fd32ccdc153a6137a3ee531b7cfea1937cc3d44f23cf2a94ef0851446fd30060671e9af59f6c58c9f6a5478d9ec8",
+          "sha256": "f6e9430a19ecadea5b517b396e243d40f470958e1e66e45da244e6c4cb9b7dfb",
+          "sha1": "93c34184b91e80e3333efe828ba044fa29e9072d",
+          "md5": "423a817a7d70960c2f1391325165d62e"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "aggs-matrix-stats-client-2.1.0-SNAPSHOT.jar",
+          "url": "aggs-matrix-stats-client-2.1.0-SNAPSHOT.jar",
+          "size": 57354,
+          "sha512": "bd92721c84eb5477106eba937d9e23ec1ea9fd32ccdc153a6137a3ee531b7cfea1937cc3d44f23cf2a94ef0851446fd30060671e9af59f6c58c9f6a5478d9ec8",
+          "sha256": "f6e9430a19ecadea5b517b396e243d40f470958e1e66e45da244e6c4cb9b7dfb",
+          "sha1": "93c34184b91e80e3333efe828ba044fa29e9072d",
+          "md5": "423a817a7d70960c2f1391325165d62e"
+        }
+      ]
+    }
+  ]
+}

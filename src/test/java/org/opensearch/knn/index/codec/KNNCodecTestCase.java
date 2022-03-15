@@ -136,12 +136,12 @@ public class  KNNCodecTestCase extends KNNTestCase {
         NativeMemoryLoadStrategy.IndexLoadStrategy.getInstance().close();
     }
 
-    public void testMultiFieldsKnnIndex(Codec codec) throws Exception {
+    public void testMultiFieldsKnnIndex(Codec writeCodec) throws Exception {
         setUpMockClusterService();
         Directory dir = newFSDirectory(createTempDir());
         IndexWriterConfig iwc = newIndexWriterConfig();
         iwc.setMergeScheduler(new SerialMergeScheduler());
-        iwc.setCodec(codec);
+        iwc.setCodec(writeCodec);
 
         /**
          * Add doc with field "test_vector"
@@ -159,7 +159,7 @@ public class  KNNCodecTestCase extends KNNTestCase {
          */
         IndexWriterConfig iwc1 = newIndexWriterConfig();
         iwc1.setMergeScheduler(new SerialMergeScheduler());
-        iwc1.setCodec(new KNN87Codec());
+        iwc1.setCodec(writeCodec);
         writer = new RandomIndexWriter(random(), dir, iwc1);
         float[] array1 = {6.0f, 14.0f};
         VectorField vectorField1 = new VectorField("my_vector", array1, sampleFieldType);

@@ -9,7 +9,7 @@ import org.opensearch.gradle.test.RestIntegTestTask
 
 buildscript {
     ext {
-        opensearch_version = System.getProperty("opensearch.version", "2.0.0-SNAPSHOT")
+        opensearch_version = System.getProperty("opensearch.version", "2.1.0-SNAPSHOT")
         knn_bwc_version = System.getProperty("bwc.version", "1.2.0.0-SNAPSHOT")
         opensearch_bwc_version = "${knn_bwc_version}" - ".0-SNAPSHOT"
         opensearch_group = "org.opensearch"
@@ -17,6 +17,10 @@ buildscript {
 
     // This isn't applying from repositories.gradle so repeating git diff it here
     repositories {
+        maven {
+            "local-repo-gradle-build-script"
+            url uri("${projectDir}/local-repo-2.1")
+        }
         mavenLocal()
         maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
         mavenCentral()
@@ -41,6 +45,10 @@ plugins {
 }
 
 repositories {
+    maven {
+        name "local-repo-gradle-build-deps"
+        url uri("${projectDir}/local-repo-2.1")
+    }
     mavenLocal()
     maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
     mavenCentral()
@@ -77,7 +85,7 @@ allprojects {
     }
     apply from: 'build-tools/repositories.gradle'
     plugins.withId('java') {
-        sourceCompatibility = targetCompatibility = "1.8"
+        sourceCompatibility = targetCompatibility = "11"
     }
 }
 
@@ -191,7 +199,7 @@ integTest {
 }
 
 testClusters.integTest {
-    testDistribution = "ARCHIVE"
+    testDistribution = "INTEG_TEST"
     plugin(project.tasks.bundlePlugin.archiveFile)
     // Cluster shrink exception thrown if we try to set numberOfNodes to 1, so only apply if > 1
     if (_numNodes > 1) numberOfNodes = _numNodes
@@ -232,10 +240,11 @@ String baseName = "knnBwcCluster"
 String bwcFilePath = "src/test/resources/org/opensearch/knn/bwc/"
 
 // Creates two test clusters of previous version and loads k-NN plugin of bwcVersion
+String distribution = "INTEG_TEST"
 2.times { i ->
     testClusters {
         "${baseName}$i" {
-            testDistribution = "ARCHIVE"
+            testDistribution = distribution
             versions = [opensearch_bwc_version, opensearch_version] //Opensearch Cluster Versions
             numberOfNodes = 3
             plugin(provider(new Callable<RegularFile>() {
@@ -251,8 +260,8 @@ String bwcFilePath = "src/test/resources/org/opensearch/knn/bwc/"
             }))
             setting 'path.repo', "${buildDir}/cluster/shared/repo/${baseName}"
             setting 'http.content_type.required', 'true'
-            environment "LD_LIBRARY_PATH", "${rootDir}/build/testclusters/${baseName}$i-0/distro/${opensearch_bwc_version}-ARCHIVE/plugins/opensearch-knn/knnlib"
-            systemProperty "java.library.path", "${rootDir}/src/test/resources/org/opensearch/knn/bwc/lib:${rootDir}/build/testclusters/${baseName}$i-0/distro/${opensearch_bwc_version}-ARCHIVE/plugins/opensearch-knn/knnlib"
+            environment "LD_LIBRARY_PATH", "${rootDir}/build/testclusters/${baseName}$i-0/distro/${opensearch_bwc_version}-${distribution}/plugins/opensearch-knn/knnlib"
+            systemProperty "java.library.path", "${rootDir}/src/test/resources/org/opensearch/knn/bwc/lib:${rootDir}/build/testclusters/${baseName}$i-0/distro/${opensearch_bwc_version}-${distribution}/plugins/opensearch-knn/knnlib"
         }
     }
 }
