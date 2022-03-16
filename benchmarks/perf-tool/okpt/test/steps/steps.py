@@ -579,4 +579,12 @@ def query_index(opensearch: OpenSearch, index_name: str, body: dict,
 
 
 def bulk_index(opensearch: OpenSearch, index_name: str, body: List):
-    return opensearch.bulk(index=index_name, body=body, timeout='5m')
+    for attempt in range(10):
+        try:
+            return opensearch.bulk(index=index_name, body=body, timeout='5m')
+        except BaseException as error:
+            print('Failed on bulk with error {}, retrying'.format(error))
+        else:
+            break
+    else:
+        print('Failed all attempts on bulk, stopped retrying')
