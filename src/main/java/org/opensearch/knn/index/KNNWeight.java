@@ -6,6 +6,8 @@
 package org.opensearch.knn.index;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.lucene.index.LeafReader;
+import org.apache.lucene.store.Directory;
 import org.opensearch.knn.common.KNNConstants;
 import org.opensearch.knn.jni.JNIService;
 import org.opensearch.knn.index.memory.NativeMemoryAllocation;
@@ -83,8 +85,17 @@ public class KNNWeight extends Weight {
 
     @Override
     public Scorer scorer(LeafReaderContext context) throws IOException {
-            SegmentReader reader = (SegmentReader) FilterLeafReader.unwrap(context.reader());
-            String directory = ((FSDirectory) FilterDirectory.unwrap(reader.directory())).getDirectory().toString();
+            final LeafReader leafReader = FilterLeafReader.unwrap(context.reader());
+            if (!(leafReader instanceof SegmentReader)) {
+                throw new RuntimeException(String.format("Context reader must be of type %s", LeafReader.class.getName()));
+            }
+            final SegmentReader reader = (SegmentReader) leafReader;
+
+            final Directory unwrappedDirectory = FilterDirectory.unwrap(reader.directory());
+            if (!(unwrappedDirectory instanceof FSDirectory)) {
+                throw new RuntimeException(String.format("Directory must be of type %s", FSDirectory.class.getName()));
+            }
+            final String directory = ((FSDirectory) unwrappedDirectory).getDirectory().toString();
 
             FieldInfo fieldInfo = reader.getFieldInfos().fieldInfo(knnQuery.getField());
 
