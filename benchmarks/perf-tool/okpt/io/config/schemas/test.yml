@@ -18,6 +18,8 @@ num_runs:
   default: 1
   min: 1
   max: 10000
+duration:
+  type: string
 show_runs:
   type: boolean
   default: false

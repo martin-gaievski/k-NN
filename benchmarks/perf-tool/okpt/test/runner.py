@@ -8,8 +8,10 @@
 import logging
 import platform
 import sys
-from datetime import datetime
+import re
+from datetime import datetime, timedelta
 from typing import Any, Dict, List
+from time import sleep
 
 import psutil
 
@@ -46,6 +48,8 @@ class TestRunner:
         execute: Run the tests and aggregate the results.
     """
 
+    regex = re.compile(r'((?P<hours>\d+?)h)?((?P<minutes>\d+?)m)?((?P<seconds>\d+?)s)?')
+
     def __init__(self, test_config: test.TestConfig):
         """"Initializes test state."""
         self.test_config = test_config
@@ -73,6 +77,17 @@ class TestRunner:
                 ' (available) / ' + str(svmem.total) + ' (total)',
         }
 
+    def parse_time(self, time_str):
+        parts = self.regex.match(time_str)
+        if not parts:
+            return
+        parts = parts.groupdict()
+        time_params = {}
+        for name, param in parts.items():
+            if param:
+                time_params[name] = int(param)
+        return timedelta(**time_params)
+
     def execute(self) -> Dict[str, Any]:
         """Runs the tests and aggregates the results.
 
@@ -83,11 +98,23 @@ class TestRunner:
         self.test.setup()
         logging.info('Beginning to run tests.')
         runs = []
-        for i in range(self.test_config.num_runs):
-            logging.info(
-                f'Running test {i + 1} of {self.test_config.num_runs}'
-            )
-            runs.append(self.test.execute())
+        logging.info(f'Duration setting {self.test_config.duration}')
+        if not self.test_config.duration:
+            for i in range(self.test_config.num_runs):
+                logging.info(
+                    f'Running test {i + 1} of {self.test_config.num_runs}'
+                )
+                runs.append(self.test.execute())
+        else :
+            cur_time = datetime.now()
+            end_time = cur_time + self.parse_time(self.test_config.duration)
+            i = 0
+            while cur_time < end_time:
+                i += 1
+                logging.info(f'Running test {i}')
+                runs.append(self.test.execute())
+                cur_time = datetime.now()
+                logging.info(f'Time left {end_time - cur_time}')
 
         logging.info('Finished running tests.')
         aggregate = _aggregate_runs(runs)

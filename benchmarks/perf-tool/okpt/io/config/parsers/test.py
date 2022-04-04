@@ -28,6 +28,7 @@ class TestConfig:
     setup: List[Step]
     steps: List[Step]
     cleanup: List[Step]
+    duration: str
 
 
 class TestParser(base.BaseParser):
@@ -59,12 +60,13 @@ class TestParser(base.BaseParser):
         if 'cleanup' in config_obj:
             cleanup = [create_step(StepConfig(step["name"], step, implicit_step_config)) for step
                        in config_obj['cleanup']]
-
+        '''duration=None if not 'duration' in config_obj else config_obj['duration']'''
         test_config = TestConfig(
             endpoint=config_obj['endpoint'],
             test_name=config_obj['test_name'],
             test_id=config_obj['test_id'],
             num_runs=config_obj['num_runs'],
+            duration=None if not 'duration' in config_obj else config_obj['duration'],
             show_runs=config_obj['show_runs'],
             setup=setup,
             steps=steps,
