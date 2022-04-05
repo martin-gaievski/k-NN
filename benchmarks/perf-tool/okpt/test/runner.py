@@ -11,7 +11,9 @@ import sys
 import re
 from datetime import datetime, timedelta
 from typing import Any, Dict, List
-from time import sleep
+from okpt.io import args
+from okpt.io.utils import writer
+from io import TextIOWrapper
 
 import psutil
 
@@ -109,12 +111,23 @@ class TestRunner:
             cur_time = datetime.now()
             end_time = cur_time + self.parse_time(self.test_config.duration)
             i = 0
+
+            cli_args = args.get_args()
+            output_name = cli_args.output.name + '.snapshot'
+            output_snapshot_file = TextIOWrapper(open(output_name, 'wb'), encoding='utf-8')
+
             while cur_time < end_time:
                 i += 1
                 logging.info(f'Running test {i}')
-                runs.append(self.test.execute())
+                test_run = self.test.execute()
+                runs.append(test_run)
+                runs[i - 1]['run'] = i
+
                 cur_time = datetime.now()
                 logging.info(f'Time left {end_time - cur_time}')
+
+                writer.write_json(test_run, output_snapshot_file, pretty=True)
+                output_snapshot_file.flush()
 
         logging.info('Finished running tests.')
         aggregate = _aggregate_runs(runs)
