@@ -96,11 +96,14 @@ public abstract class KNNVectorFieldMapper extends ParametrizedFieldMapper {
             if (o == null) {
                 throw new IllegalArgumentException("Dimension cannot be null");
             }
-            int value = XContentMapValues.nodeIntegerValue(o);
-            if (value > MAX_DIMENSION) {
-                throw new IllegalArgumentException("Dimension value cannot be greater than " + MAX_DIMENSION + " for vector: " + name);
+            int value;
+            try {
+                value = XContentMapValues.nodeIntegerValue(o);
+            } catch (Exception exception) {
+                throw new IllegalArgumentException(
+                    String.format("Unable to parse [dimension] from provided value [%s] for vector [%s]", o, name)
+                );
             }
-
             if (value <= 0) {
                 throw new IllegalArgumentException("Dimension value must be greater than 0 " + "for vector: " + name);
             }
