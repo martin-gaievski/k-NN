@@ -28,21 +28,13 @@ public class KNNClusterTestUtils {
      * @param versions list of versions for cluster nodes
      * @return
      */
-    public static ClusterService mockClusterService(final List<Version> versions) {
+    public static ClusterService mockClusterService(final Version version) {
         ClusterService clusterService = mock(ClusterService.class);
         ClusterState clusterState = mock(ClusterState.class);
         when(clusterService.state()).thenReturn(clusterState);
         DiscoveryNodes discoveryNodes = mock(DiscoveryNodes.class);
         when(clusterState.getNodes()).thenReturn(discoveryNodes);
-        ImmutableOpenMap.Builder<String, DiscoveryNode> builder = ImmutableOpenMap.builder();
-        for (Version version : versions) {
-            DiscoveryNode clusterNode = mock(DiscoveryNode.class);
-            when(clusterNode.getVersion()).thenReturn(version);
-            builder.put(randomAlphaOfLength(10), clusterNode);
-        }
-        ImmutableOpenMap<String, DiscoveryNode> mapOfNodes = builder.build();
-        when(discoveryNodes.getNodes()).thenReturn(mapOfNodes);
-
+        when(discoveryNodes.getMinNodeVersion()).thenReturn(version);
         return clusterService;
     }
 }
