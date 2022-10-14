@@ -8,7 +8,7 @@ package org.opensearch.knn.index;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Floats;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.lucene.index.VectorSimilarityFunction;
 import org.junit.After;
 import org.opensearch.client.Request;
@@ -141,7 +141,7 @@ public class LuceneEngineIT extends KNNRestTestCase {
         validateQueries(spaceType, FIELD_NAME);
     }
 
-    public void testQuery_multipleEngines() throws IOException {
+    public void testQuery_multipleEngines() throws Exception {
         String luceneField = "lucene-field";
         SpaceType luceneSpaceType = SpaceType.COSINESIMIL;
         String nmslibField = "nmslib-field";
@@ -194,7 +194,7 @@ public class LuceneEngineIT extends KNNRestTestCase {
         validateQueries(nmslibSpaceType, nmslibField);
     }
 
-    public void testAddDoc() throws IOException {
+    public void testAddDoc() throws Exception {
         List<Integer> mValues = ImmutableList.of(16, 32, 64, 128);
         List<Integer> efConstructionValues = ImmutableList.of(16, 32, 64, 128);
 
@@ -388,7 +388,7 @@ public class LuceneEngineIT extends KNNRestTestCase {
         validateQueries(spaceType, FIELD_NAME);
     }
 
-    private void validateQueries(SpaceType spaceType, String fieldName) throws IOException {
+    private void validateQueries(SpaceType spaceType, String fieldName) throws Exception {
 
         int k = LuceneEngineIT.TEST_INDEX_VECTORS.length;
         for (float[] queryVector : TEST_QUERY_VECTORS) {
