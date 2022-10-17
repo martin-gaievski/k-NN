@@ -107,21 +107,35 @@ class HDF5Dataset():
 
                 self.apply_filter(expected_neighbors, attributes, data_set_filters, 'neighbors_filter_3', filter3)
 
+                # filter 4 - color and taste are not None and age is between 20 and 80
+                def filter4(attributes, vector_idx):
+                    if (attributes[vector_idx][0].decode() == 'green' or attributes[vector_idx][0].decode() == 'blue') \
+                        and  (attributes[vector_idx][1].decode() == 'bitter') \
+                        and 30 <= int(attributes[vector_idx][2].decode()) <= 60:
+                        return True
+                    else:
+                        return False
+
+                self.apply_filter(expected_neighbors, attributes, data_set_filters, 'neighbors_filter_4', filter4)
+
                 data_set_filters.flush()
                 data_set_filters.close()
 
     def apply_filter(self, expected_neighbors, attributes, data_set_w_filtering, filter_name, filter_func):
         # filter one - color = red, age >= 20
-        neighbors_filter_1 = []
+        neighbors_filter = []
+        count = 0
         for expected_neighbors_row in expected_neighbors:
-            neighbors_filter_1_row = [-1] * len(expected_neighbors_row)
+            neighbors_filter_row = [-1] * len(expected_neighbors_row)
             idx = 0
             for vector_idx in expected_neighbors_row:
                 if filter_func(attributes, vector_idx):
-                    neighbors_filter_1_row[idx] = vector_idx
+                    neighbors_filter_row[idx] = vector_idx
                     idx += 1
-            neighbors_filter_1.append(neighbors_filter_1_row)
-        data_set_w_filtering.create_dataset(filter_name, data=neighbors_filter_1)
+                    count += 1
+            neighbors_filter.append(neighbors_filter_row)
+        print('ground truth size for {} is {}'.format(filter_name, count))
+        data_set_w_filtering.create_dataset(filter_name, data=neighbors_filter)
         return expected_neighbors
 
     def dd(self, n):

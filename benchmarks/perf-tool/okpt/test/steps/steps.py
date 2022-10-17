@@ -517,10 +517,10 @@ class QueryWithFilterStep(OpenSearchStep):
             query = self.dataset.read(1)
             if query is None:
                 break
-
+            body =  get_body_filter(query[0])
             query_responses.append(
                 query_index(self.opensearch, self.index_name,
-                            get_body_filter(query[0]), [self.field_name]))
+                           body, [self.field_name]))
 
         results['took'] = [
             float(query_response['took']) for query_response in query_responses
@@ -686,14 +686,7 @@ def recall_at_r(results, neighbor_dataset, r, k, query_count):
         for j in range(rr):
             if results[query][j] in true_neighbors_set:
                 correct += 1.0
-            #else:
-            #    print(results[query])
-            #    print(true_neighbors_set)
-    """
-    print(correct)
-    print(r)
-    print(query_count)
-    """
+
     return correct / rrr
 
 
