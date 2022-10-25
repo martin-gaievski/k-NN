@@ -118,13 +118,25 @@ class HDF5Dataset():
 
                 self.apply_filter(expected_neighbors, attributes, data_set_filters, 'neighbors_filter_4', filter4)
 
+                # filter 5 - color and taste are not None and age is between 20 and 80
+                def filter5(attributes, vector_idx):
+                    if attributes[vector_idx][0].decode() == 'green' or attributes[vector_idx][0].decode() == 'blue' \
+                            or attributes[vector_idx][0].decode() == 'yellow' \
+                            or attributes[vector_idx][1].decode() == 'sweet' \
+                            or 30 <= int(attributes[vector_idx][2].decode()) <= 70:
+                        return True
+                    else:
+                        return False
+
+                self.apply_filter(expected_neighbors, attributes, data_set_filters, 'neighbors_filter_5', filter5)
+
                 data_set_filters.flush()
                 data_set_filters.close()
 
     def apply_filter(self, expected_neighbors, attributes, data_set_w_filtering, filter_name, filter_func):
         # filter one - color = red, age >= 20
         neighbors_filter = []
-        count = 0
+        filtered_count = 0
         for expected_neighbors_row in expected_neighbors:
             neighbors_filter_row = [-1] * len(expected_neighbors_row)
             idx = 0
@@ -132,9 +144,11 @@ class HDF5Dataset():
                 if filter_func(attributes, vector_idx):
                     neighbors_filter_row[idx] = vector_idx
                     idx += 1
-                    count += 1
+                    filtered_count += 1
             neighbors_filter.append(neighbors_filter_row)
-        print('ground truth size for {} is {}'.format(filter_name, count))
+        overall_count = len(expected_neighbors) * len(expected_neighbors[0])
+        perc = float(filtered_count/overall_count) * 100
+        print('ground truth size for {} is {}, percentage {}'.format(filter_name, filtered_count, perc))
         data_set_w_filtering.create_dataset(filter_name, data=neighbors_filter)
         return expected_neighbors
 

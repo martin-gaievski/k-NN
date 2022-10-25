@@ -317,8 +317,6 @@ class IngestStep(OpenSearchStep):
         partition_attr = self.attributes_dataset.read(self.doc_count)
 
         for i in range(0, self.doc_count, self.bulk_size):
-            if i % 5000 == 0:
-                print('indexed {} docs'.format(i))
             partition = self.dataset.read(self.bulk_size)
             if partition is None:
                 break
@@ -512,8 +510,6 @@ class QueryWithFilterStep(OpenSearchStep):
         query_responses = []
 
         for i in range(self.query_count):
-            if i % 1000 == 0:
-                print('executed {} queries'.format(i))
             query = self.dataset.read(1)
             if query is None:
                 break
