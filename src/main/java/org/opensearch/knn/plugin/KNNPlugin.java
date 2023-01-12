@@ -359,6 +359,9 @@ public class KNNPlugin extends Plugin
             IndexModule.INDEX_STORE_HYBRID_MMAP_EXTENSIONS.getDefault(Settings.EMPTY).stream(),
             engineSettings.stream()
         ).collect(Collectors.toList());
-        return Settings.builder().putList(IndexModule.INDEX_STORE_HYBRID_MMAP_EXTENSIONS.getKey(), combinedSettings).build();
+        return Settings.builder()
+            .putList(IndexModule.INDEX_STORE_HYBRID_MMAP_EXTENSIONS.getKey(), combinedSettings)
+            .putList(IndexModule.INDEX_STORE_PRE_LOAD_SETTING.getKey(), combinedSettings)
+            .build();
     }
 }
