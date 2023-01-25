@@ -5,6 +5,10 @@
 
 package org.opensearch.knn.index;
 
+import com.google.common.collect.Streams;
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.lucene.codecs.CodecUtil;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +16,15 @@ import org.apache.lucene.index.FilterLeafReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.index.SegmentReader;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.KnnVectorQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.FilterDirectory;
+import org.apache.lucene.store.IOContext;
+import org.apache.lucene.store.IndexInput;
+import org.opensearch.common.lucene.search.Queries;
 import org.opensearch.index.engine.Engine;
 import org.opensearch.index.shard.IndexShard;
 import org.opensearch.knn.index.mapper.KNNVectorFieldMapper;
@@ -24,11 +35,16 @@ import org.opensearch.knn.index.util.KNNEngine;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.opensearch.knn.common.KNNConstants.SPACE_TYPE;
 import static org.opensearch.knn.index.IndexUtil.getParametersAtLoading;
@@ -98,6 +114,40 @@ public class KNNIndexShard {
                 }
             });
         }
+
+        logger.info("[KNN] Warming up files for mmap");
+        final List<String> engineMMapExtensions = Arrays.stream(KNNEngine.values())
+            .flatMap(engine -> engine.mmapFileExtensions().stream())
+            .collect(Collectors.toList());
+        final Directory dir = indexShard.store().directory();
+        Arrays.stream(dir.listAll()).forEach(file -> {
+            final Optional<String> maybeFileExtension = Optional.ofNullable(file)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(file.lastIndexOf(".") + 1));
+            if (maybeFileExtension.isPresent() == false
+                || engineMMapExtensions.stream().anyMatch(extension -> extension.equals(maybeFileExtension.get())) == false) {
+                return;
+            }
+            try {
+                IndexReader reader = DirectoryReader.open(dir);
+                IndexSearcher searcher = new IndexSearcher(reader);
+                //Query warmUpQuery = Queries.newMatchAllQuery();
+                int dim = 128, k = 100, numOfQueries = 200;
+
+                for (int n = 0; n < numOfQueries; n++) {
+                    float[] qVector = new float[dim];
+                    IntStream.range(0, dim).forEach(i -> qVector[i] = 256 * new Random().nextFloat());
+                    Query warmUpQuery = new KnnVectorQuery("target_field", qVector, k);
+                    searcher.search(warmUpQuery, k);
+                }
+                logger.info(String.format("[KNN] Executed match all query for directory %s", dir.toString()));
+                //final IndexInput ii = dir.openInput(file, IOContext.DEFAULT);
+                //CodecUtil.checksumEntireFile(ii);
+            } catch (IOException e) {
+                logger.debug(String.format("[KNN] Warmup, tried to open file %s", file), e);
+            }
+            logger.info(String.format("[KNN] Pre-loaded file %s", file));
+        });
     }
 
     /**
