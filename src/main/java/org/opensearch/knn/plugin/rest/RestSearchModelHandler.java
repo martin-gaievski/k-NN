@@ -14,6 +14,7 @@ package org.opensearch.knn.plugin.rest;
 import com.google.common.collect.ImmutableList;
 import org.opensearch.action.search.SearchRequest;
 import org.opensearch.client.node.NodeClient;
+import org.opensearch.common.util.concurrent.ThreadContext;
 import org.opensearch.knn.plugin.KNNPlugin;
 import org.opensearch.knn.plugin.transport.SearchModelAction;
 import org.opensearch.rest.BaseRestHandler;
@@ -95,16 +96,18 @@ public class RestSearchModelHandler extends BaseRestHandler {
 
     @Override
     protected RestChannelConsumer prepareRequest(RestRequest request, NodeClient client) throws IOException {
-        validateRequest(request);
-        SearchRequest searchRequest = new SearchRequest();
-        IntConsumer setSize = size -> searchRequest.source().size(size);
-        request.withContentOrSourceParamParserOrNull(
-            parser -> RestSearchAction.parseSearchRequest(searchRequest, request, parser, client.getNamedWriteableRegistry(), setSize)
-        );
+        try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
+            validateRequest(request);
+            SearchRequest searchRequest = new SearchRequest();
+            IntConsumer setSize = size -> searchRequest.source().size(size);
+            request.withContentOrSourceParamParserOrNull(
+                    parser -> RestSearchAction.parseSearchRequest(searchRequest, request, parser, client.getNamedWriteableRegistry(), setSize)
+            );
 
-        return channel -> {
-            RestCancellableNodeClient cancelClient = new RestCancellableNodeClient(client, request.getHttpChannel());
-            cancelClient.execute(SearchModelAction.INSTANCE, searchRequest, new RestToXContentListener<>(channel));
-        };
+            return channel -> {
+                RestCancellableNodeClient cancelClient = new RestCancellableNodeClient(client, request.getHttpChannel());
+                cancelClient.execute(SearchModelAction.INSTANCE, searchRequest, new RestToXContentListener<>(channel));
+            };
+        }
     }
 }

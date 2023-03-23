@@ -13,6 +13,7 @@ package org.opensearch.knn.plugin.rest;
 
 import com.google.common.collect.ImmutableList;
 import org.opensearch.client.node.NodeClient;
+import org.opensearch.common.util.concurrent.ThreadContext;
 import org.opensearch.common.xcontent.XContentParser;
 import org.opensearch.index.mapper.NumberFieldMapper;
 import org.opensearch.knn.index.KNNMethodContext;
@@ -63,9 +64,10 @@ public class RestTrainModelHandler extends BaseRestHandler {
 
     @Override
     protected RestChannelConsumer prepareRequest(RestRequest restRequest, NodeClient client) throws IOException {
-        TrainingModelRequest trainingModelRequest = createTransportRequest(restRequest);
-
-        return channel -> client.execute(TrainingJobRouterAction.INSTANCE, trainingModelRequest, new RestToXContentListener<>(channel));
+        try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
+            TrainingModelRequest trainingModelRequest = createTransportRequest(restRequest);
+            return channel -> client.execute(TrainingJobRouterAction.INSTANCE, trainingModelRequest, new RestToXContentListener<>(channel));
+        }
     }
 
     private TrainingModelRequest createTransportRequest(RestRequest restRequest) throws IOException {

@@ -14,6 +14,7 @@ package org.opensearch.knn.plugin.rest;
 import com.google.common.collect.ImmutableList;
 import org.opensearch.client.node.NodeClient;
 import org.opensearch.common.Strings;
+import org.opensearch.common.util.concurrent.ThreadContext;
 import org.opensearch.knn.plugin.KNNPlugin;
 import org.opensearch.knn.plugin.transport.DeleteModelAction;
 import org.opensearch.knn.plugin.transport.DeleteModelRequest;
@@ -57,11 +58,13 @@ public class RestDeleteModelHandler extends BaseRestHandler {
      */
     @Override
     protected RestChannelConsumer prepareRequest(RestRequest request, NodeClient client) {
-        String modelID = request.param(MODEL_ID);
-        if (!Strings.hasText(modelID)) {
-            throw new IllegalArgumentException("model ID cannot be empty");
+        try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
+            String modelID = request.param(MODEL_ID);
+            if (!Strings.hasText(modelID)) {
+                throw new IllegalArgumentException("model ID cannot be empty");
+            }
+            DeleteModelRequest deleteModelRequest = new DeleteModelRequest(modelID);
+            return channel -> client.execute(DeleteModelAction.INSTANCE, deleteModelRequest, new RestToXContentListener<>(channel));
         }
-        DeleteModelRequest deleteModelRequest = new DeleteModelRequest(modelID);
-        return channel -> client.execute(DeleteModelAction.INSTANCE, deleteModelRequest, new RestToXContentListener<>(channel));
     }
 }
