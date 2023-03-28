@@ -7,6 +7,7 @@ package org.opensearch.knn.bwc;
 
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.opensearch.action.search.SearchResponse;
 import org.opensearch.client.Request;
 import org.opensearch.client.Response;
@@ -24,6 +25,7 @@ import org.opensearch.knn.plugin.KNNPlugin;
 import org.opensearch.knn.plugin.transport.DeleteModelResponse;
 import org.opensearch.rest.RestStatus;
 import org.opensearch.search.SearchHit;
+import org.opensearch.test.rest.OpenSearchRestTestCase;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -87,7 +89,7 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
             createKnnIndex(testIndex, modelIndexMapping(TEST_FIELD, TEST_MODEL_ID));
             addKNNDocs(testIndex, TEST_FIELD, DIMENSIONS, DOC_ID, NUM_DOCS);
         } else {
-            /*DOC_ID = NUM_DOCS;
+            DOC_ID = NUM_DOCS;
             addKNNDocs(testIndex, TEST_FIELD, DIMENSIONS, DOC_ID, NUM_DOCS);
             QUERY_COUNT = 2 * NUM_DOCS;
             validateKNNSearch(testIndex, TEST_FIELD, DIMENSIONS, QUERY_COUNT, K);
@@ -102,12 +104,11 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
             deleteKNNIndex(testIndex);
             deleteKNNIndex(TRAINING_INDEX);
             deleteKNNIndex(TEST_MODEL_INDEX);
-             */
         }
     }
 
     // KNN model test Default Parameters
-/*    public void testKNNModelDefault() throws Exception {
+    public void testKNNModelDefault() throws Exception {
         if (isRunningAgainstOldCluster()) {
 
             // Create a training index and randomly ingest data into it
@@ -142,10 +143,10 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
             deleteKNNIndex(TRAINING_INDEX_DEFAULT);
             deleteKNNIndex(TEST_MODEL_INDEX_DEFAULT);
         }
-    }*/
+    }
 
     // KNN Delete Model test for model in Training State
-    /*public void testDeleteTrainingModel() throws Exception {
+    public void testDeleteTrainingModel() throws Exception {
         byte[] testModelBlob = "hello".getBytes(StandardCharsets.UTF_8);
         ModelMetadata testModelMetadata = getModelMetadata();
         testModelMetadata.setState(ModelState.TRAINING);
@@ -175,20 +176,29 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
             );
             assertEquals(errorMessage, responseMap.get(DeleteModelResponse.ERROR_MSG));
         }
-    }*/
+    }
 
     // Delete Models and ".opensearch-knn-models" index to clear cluster metadata
     @AfterClass
-    public static void wipeAllModels() throws IOException {
+    public static void wipeAllModels() throws Exception {
         if (!isRunningAgainstOldCluster()) {
             deleteKNNModel(TEST_MODEL_ID);
             deleteKNNModel(TEST_MODEL_ID_DEFAULT);
             deleteKNNModel(TEST_MODEL_ID_TRAINING);
 
-            Request request = new Request("DELETE", "/" + MODEL_INDEX_NAME);
+            //wipeIndexContent(MODEL_INDEX_NAME);
+
+            /*Request request = new Request("DELETE", "/" + MODEL_INDEX_NAME);
 
             Response response = client().performRequest(request);
-            assertEquals(request.getEndpoint() + ": failed", RestStatus.OK, RestStatus.fromCode(response.getStatusLine().getStatusCode()));
+            assertEquals(request.getEndpoint() + ": failed", RestStatus.OK, RestStatus.fromCode(response.getStatusLine().getStatusCode()));*/
+        }
+    }
+
+    @BeforeClass
+    public static void wipeModelIndex() throws Exception {
+        if (isRunningAgainstOldCluster()) {
+            //wipeIndexContent(MODEL_INDEX_NAME);
         }
     }
 
@@ -226,7 +236,7 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
 
     // Confirm that the model gets created using Get Model API
     public void validateModelCreated(String modelId) throws Exception {
-        Response getResponse = getModel(modelId, null);
+        Response getResponse = getModel(modelId, null, OpenSearchRestTestCase::client);
         String responseBody = EntityUtils.toString(getResponse.getEntity());
         assertNotNull(responseBody);
 

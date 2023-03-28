@@ -142,14 +142,16 @@ public class KNNRestTestCase extends ODFERestTestCase {
      * Create KNN Index with default settings
      */
     protected void createKnnIndex(String index, String mapping) throws IOException {
-        createKnnIndex(index, getKNNDefaultIndexSettings(), mapping);
+        createIndex(index, getKNNDefaultIndexSettings());
+        putMappingRequest(index, mapping);
     }
 
     /**
      * Create KNN Index
      */
     protected void createKnnIndex(String index, Settings settings, String mapping) throws IOException {
-        createIndex(index, mapping.substring(1, mapping.length() - 1), settings);
+        createIndex(index, settings);
+        putMappingRequest(index, mapping);
     }
 
     protected void createBasicKnnIndex(String index, String fieldName, int dimension) throws IOException {
@@ -166,9 +168,9 @@ public class KNNRestTestCase extends ODFERestTestCase {
         );
 
         mapping = mapping.substring(1, mapping.length() - 1);
-
-        Settings settings = Settings.EMPTY;
-        createIndex(index, mapping, settings);
+        createIndex(index, Settings.EMPTY, mapping);
+        //Settings settings = Settings.EMPTY;
+        //createIndex(index, mapping, settings);
     }
 
     private static void createIndex(String index, String mapping, Settings settings) throws IOException {
@@ -1151,6 +1153,10 @@ public class KNNRestTestCase extends ODFERestTestCase {
      * @throws IOException if request cannot be performed
      */
     public Response getModel(String modelId, List<String> filters) throws IOException {
+        return getModel(modelId, filters, OpenSearchRestTestCase::adminClient);
+    }
+
+    public Response getModel(String modelId, List<String> filters, Supplier<RestClient> restClientSupplier) throws IOException {
 
         if (modelId == null) {
             modelId = "";
@@ -1166,7 +1172,7 @@ public class KNNRestTestCase extends ODFERestTestCase {
 
         Request request = new Request("GET", "/_plugins/_knn/models" + modelId + filterString);
 
-        return adminClient().performRequest(request);
+        return restClientSupplier.get().performRequest(request);
     }
 
     public void assertTrainingSucceeds(String modelId, int attempts, int delayInMillis) throws InterruptedException, Exception {

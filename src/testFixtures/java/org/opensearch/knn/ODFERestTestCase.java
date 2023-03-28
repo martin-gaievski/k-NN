@@ -39,14 +39,17 @@ import org.opensearch.client.Request;
 import org.opensearch.client.Response;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
+import org.opensearch.cluster.ClusterModule;
 import org.opensearch.common.Strings;
 import org.opensearch.common.io.PathUtils;
 import org.opensearch.common.settings.Settings;
 import org.opensearch.common.unit.TimeValue;
 import org.opensearch.common.util.concurrent.ThreadContext;
+import org.opensearch.common.xcontent.LoggingDeprecationHandler;
 import org.opensearch.common.xcontent.XContentFactory;
 import org.opensearch.core.xcontent.DeprecationHandler;
 import org.opensearch.core.xcontent.NamedXContentRegistry;
+import org.opensearch.core.xcontent.XContent;
 import org.opensearch.core.xcontent.XContentBuilder;
 import org.opensearch.core.xcontent.XContentParser;
 import org.opensearch.common.xcontent.XContentType;
@@ -216,15 +219,15 @@ public abstract class ODFERestTestCase extends OpenSearchRestTestCase {
     }
 
     private boolean isIndexCleanupRequired(final String index) {
-        return MODEL_INDEX_NAME.equals(index);
+        return MODEL_INDEX_NAME.equals(index) && !getSkipDeleteModelIndexFlag();
     }
 
-    private void wipeIndexContent(String indexName) throws IOException, ParseException {
+    protected static void wipeIndexContent(String indexName) throws IOException, ParseException {
         deleteModels(getModelIds());
         deleteAllDocs(indexName);
     }
 
-    private List<String> getModelIds() throws IOException, ParseException {
+    private static List<String> getModelIds() throws IOException, ParseException {
         final String restURIGetModels = String.join("/", KNNPlugin.KNN_BASE_URI, MODELS, "_search");
         final Response response = adminClient().performRequest(new Request("GET", restURIGetModels));
 
@@ -233,13 +236,15 @@ public abstract class ODFERestTestCase extends OpenSearchRestTestCase {
         final String responseBody = EntityUtils.toString(response.getEntity());
         assertNotNull(responseBody);
 
-        final XContentParser parser = createParser(XContentType.JSON.xContent(), responseBody);
+        final XContent xContent = XContentType.JSON.xContent();
+        final XContentParser parser = xContent.createParser(new NamedXContentRegistry(ClusterModule.getNamedXWriteables()),
+                LoggingDeprecationHandler.INSTANCE, responseBody);
         final SearchResponse searchResponse = SearchResponse.fromXContent(parser);
 
         return Arrays.stream(searchResponse.getHits().getHits()).map(SearchHit::getId).collect(Collectors.toList());
     }
 
-    private void deleteModels(final List<String> modelIds) throws IOException {
+    private static void deleteModels(final List<String> modelIds) throws IOException {
         for (final String testModelID : modelIds) {
             final String restURIGetModel = String.join("/", KNNPlugin.KNN_BASE_URI, MODELS, testModelID);
             final Response getModelResponse = adminClient().performRequest(new Request("GET", restURIGetModel));
@@ -251,7 +256,7 @@ public abstract class ODFERestTestCase extends OpenSearchRestTestCase {
         }
     }
 
-    private void deleteAllDocs(final String indexName) throws IOException {
+    private static void deleteAllDocs(final String indexName) throws IOException {
         final String restURIDeleteByQuery = String.join("/", indexName, "_delete_by_query");
         final Request request = new Request("POST", restURIDeleteByQuery);
         final XContentBuilder matchAllDocsQuery = XContentFactory.jsonBuilder()
@@ -298,4 +303,5 @@ public abstract class ODFERestTestCase extends OpenSearchRestTestCase {
             .put(OPENSEARCH_SECURITY_SSL_HTTP_KEYSTORE_KEYPASSWORD, "changeit")
             .build();
     }
+
 }
