@@ -7,7 +7,6 @@ package org.opensearch.knn.bwc;
 
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.opensearch.action.search.SearchResponse;
 import org.opensearch.client.Request;
 import org.opensearch.client.Response;
@@ -185,20 +184,6 @@ public class ModelIT extends AbstractRestartUpgradeTestCase {
             deleteKNNModel(TEST_MODEL_ID);
             deleteKNNModel(TEST_MODEL_ID_DEFAULT);
             deleteKNNModel(TEST_MODEL_ID_TRAINING);
-
-            //wipeIndexContent(MODEL_INDEX_NAME);
-
-            /*Request request = new Request("DELETE", "/" + MODEL_INDEX_NAME);
-
-            Response response = client().performRequest(request);
-            assertEquals(request.getEndpoint() + ": failed", RestStatus.OK, RestStatus.fromCode(response.getStatusLine().getStatusCode()));*/
-        }
-    }
-
-    @BeforeClass
-    public static void wipeModelIndex() throws Exception {
-        if (isRunningAgainstOldCluster()) {
-            //wipeIndexContent(MODEL_INDEX_NAME);
         }
     }
 

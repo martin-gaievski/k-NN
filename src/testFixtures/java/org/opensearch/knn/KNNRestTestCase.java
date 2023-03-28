@@ -142,16 +142,14 @@ public class KNNRestTestCase extends ODFERestTestCase {
      * Create KNN Index with default settings
      */
     protected void createKnnIndex(String index, String mapping) throws IOException {
-        createIndex(index, getKNNDefaultIndexSettings());
-        putMappingRequest(index, mapping);
+        createKnnIndex(index, getKNNDefaultIndexSettings(), mapping);
     }
 
     /**
      * Create KNN Index
      */
     protected void createKnnIndex(String index, Settings settings, String mapping) throws IOException {
-        createIndex(index, settings);
-        putMappingRequest(index, mapping);
+        createIndex(index, mapping.substring(1, mapping.length() - 1), settings);
     }
 
     protected void createBasicKnnIndex(String index, String fieldName, int dimension) throws IOException {
@@ -168,9 +166,9 @@ public class KNNRestTestCase extends ODFERestTestCase {
         );
 
         mapping = mapping.substring(1, mapping.length() - 1);
-        createIndex(index, Settings.EMPTY, mapping);
-        //Settings settings = Settings.EMPTY;
-        //createIndex(index, mapping, settings);
+
+        Settings settings = Settings.EMPTY;
+        createIndex(index, mapping, settings);
     }
 
     private static void createIndex(String index, String mapping, Settings settings) throws IOException {
