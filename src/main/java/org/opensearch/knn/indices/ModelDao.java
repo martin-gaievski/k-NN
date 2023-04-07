@@ -13,6 +13,7 @@ package org.opensearch.knn.indices;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opensearch.OpenSearchException;
@@ -42,9 +43,9 @@ import org.opensearch.cluster.health.ClusterIndexHealth;
 import org.opensearch.cluster.metadata.IndexMetadata;
 import org.opensearch.cluster.service.ClusterService;
 import org.opensearch.common.settings.Settings;
-import org.opensearch.common.util.concurrent.ThreadContext;
 import org.opensearch.index.IndexNotFoundException;
 import org.opensearch.knn.common.KNNConstants;
+import org.opensearch.knn.common.TaskRunner;
 import org.opensearch.knn.plugin.transport.DeleteModelResponse;
 import org.opensearch.knn.plugin.transport.GetModelResponse;
 import org.opensearch.knn.plugin.transport.RemoveModelFromCacheAction;
@@ -358,19 +359,29 @@ public interface ModelDao {
             );
         }
 
+        @SneakyThrows
         @Override
         public Model get(String modelId) throws ExecutionException, InterruptedException {
             /*
                 GET /<model_index>/<modelId>?_local
             */
-            // temporary setting thread context to default, this is needed to allow actions on model system index when security plugin is
-            // enabled
-            try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
-                GetRequestBuilder getRequestBuilder = new GetRequestBuilder(client, GetAction.INSTANCE, MODEL_INDEX_NAME).setId(modelId)
-                    .setPreference("_local");
-                GetResponse getResponse = getRequestBuilder.execute().get();
-                Map<String, Object> responseMap = getResponse.getSourceAsMap();
-                return Model.getModelFromSourceMap(responseMap);
+            try {
+                return TaskRunner.runWithStashedThreadContext(client, () -> {
+                    GetRequestBuilder getRequestBuilder = new GetRequestBuilder(client, GetAction.INSTANCE, MODEL_INDEX_NAME).setId(modelId)
+                        .setPreference("_local");
+                    GetResponse getResponse;
+                    try {
+                        getResponse = getRequestBuilder.execute().get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Map<String, Object> responseMap = getResponse.getSourceAsMap();
+                    return Model.getModelFromSourceMap(responseMap);
+                });
+            } catch (RuntimeException runtimeException) {
+                // we need to use RuntimeException as container for real exception to keep signature
+                // of runWithStashedThreadContext generic
+                throw runtimeException.getCause();
             }
         }
 
@@ -409,12 +420,10 @@ public interface ModelDao {
          */
         @Override
         public void search(SearchRequest request, ActionListener<SearchResponse> actionListener) {
-            // temporary setting thread context to default, this is needed to allow actions on model system index when security plugin is
-            // enabled
-            try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
+            TaskRunner.runWithStashedThreadContext(client, () -> {
                 request.indices(MODEL_INDEX_NAME);
                 client.search(request, actionListener);
-            }
+            });
         }
 
         @Override

@@ -17,7 +17,7 @@ import org.opensearch.action.support.HandledTransportAction;
 import org.opensearch.client.Client;
 import org.opensearch.cluster.service.ClusterService;
 import org.opensearch.common.inject.Inject;
-import org.opensearch.common.util.concurrent.ThreadContext;
+import org.opensearch.knn.common.TaskRunner;
 import org.opensearch.knn.index.memory.NativeMemoryCacheManager;
 import org.opensearch.knn.index.memory.NativeMemoryEntryContext;
 import org.opensearch.knn.index.memory.NativeMemoryLoadStrategy;
@@ -84,19 +84,19 @@ public class TrainingModelTransportAction extends HandledTransportAction<Trainin
             KNNCounter.TRAINING_ERRORS.increment();
             listener.onFailure(ex);
         });
-        // temporary setting thread context to default, this is needed to allow actions on model system index when security plugin is
-        // enabled
-        try (ThreadContext.StoredContext context = client.threadPool().getThreadContext().stashContext()) {
-            TrainingJobRunner.getInstance()
-                .execute(
-                    trainingJob,
-                    ActionListener.wrap(
-                        indexResponse -> wrappedListener.onResponse(new TrainingModelResponse(indexResponse.getId())),
-                        wrappedListener::onFailure
-                    )
-                );
-        } catch (IOException e) {
-            wrappedListener.onFailure(e);
-        }
+        TaskRunner.runWithStashedThreadContext(client, () -> {
+            try {
+                TrainingJobRunner.getInstance()
+                    .execute(
+                        trainingJob,
+                        ActionListener.wrap(
+                            indexResponse -> wrappedListener.onResponse(new TrainingModelResponse(indexResponse.getId())),
+                            wrappedListener::onFailure
+                        )
+                    );
+            } catch (IOException e) {
+                wrappedListener.onFailure(e);
+            }
+        });
     }
 }
