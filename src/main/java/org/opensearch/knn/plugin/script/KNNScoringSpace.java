@@ -5,6 +5,7 @@
 
 package org.opensearch.knn.plugin.script;
 
+import org.apache.lucene.search.IndexSearcher;
 import org.opensearch.knn.index.mapper.KNNVectorFieldMapper;
 import org.opensearch.knn.index.query.KNNWeight;
 import org.apache.lucene.index.LeafReaderContext;
@@ -36,7 +37,8 @@ public interface KNNScoringSpace {
      * @return ScoreScript for this query
      * @throws IOException throws IOException if ScoreScript cannot be constructed
      */
-    ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx) throws IOException;
+    ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx, IndexSearcher searcher)
+        throws IOException;
 
     class L2 implements KNNScoringSpace {
 
@@ -62,9 +64,14 @@ public interface KNNScoringSpace {
             this.scoringMethod = (float[] q, float[] v) -> 1 / (1 + KNNScoringUtil.l2Squared(q, v));
         }
 
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
-            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx);
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
+            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx, searcher);
         }
     }
 
@@ -94,9 +101,14 @@ public interface KNNScoringSpace {
             this.scoringMethod = (float[] q, float[] v) -> 1 + KNNScoringUtil.cosinesimilOptimized(q, v, qVectorSquaredMagnitude);
         }
 
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
-            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx);
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
+            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx, searcher);
         }
     }
 
@@ -127,8 +139,13 @@ public interface KNNScoringSpace {
         }
 
         @SuppressWarnings("unchecked")
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
             if (this.processedQuery instanceof Long) {
                 return new KNNScoreScript.LongType(
                     params,
@@ -136,7 +153,8 @@ public interface KNNScoringSpace {
                     field,
                     (BiFunction<Long, Long, Float>) this.scoringMethod,
                     lookup,
-                    ctx
+                    ctx,
+                    searcher
                 );
             }
 
@@ -146,7 +164,8 @@ public interface KNNScoringSpace {
                 field,
                 (BiFunction<BigInteger, BigInteger, Float>) this.scoringMethod,
                 lookup,
-                ctx
+                ctx,
+                searcher
             );
         }
     }
@@ -175,9 +194,14 @@ public interface KNNScoringSpace {
             this.scoringMethod = (float[] q, float[] v) -> 1 / (1 + KNNScoringUtil.l1Norm(q, v));
         }
 
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
-            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx);
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
+            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx, searcher);
         }
     }
 
@@ -205,9 +229,14 @@ public interface KNNScoringSpace {
             this.scoringMethod = (float[] q, float[] v) -> 1 / (1 + KNNScoringUtil.lInfNorm(q, v));
         }
 
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
-            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx);
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
+            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx, searcher);
         }
     }
 
@@ -238,9 +267,14 @@ public interface KNNScoringSpace {
         }
 
         @Override
-        public ScoreScript getScoreScript(Map<String, Object> params, String field, SearchLookup lookup, LeafReaderContext ctx)
-            throws IOException {
-            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx);
+        public ScoreScript getScoreScript(
+            Map<String, Object> params,
+            String field,
+            SearchLookup lookup,
+            LeafReaderContext ctx,
+            IndexSearcher searcher
+        ) throws IOException {
+            return new KNNScoreScript.KNNVectorType(params, this.processedQuery, field, this.scoringMethod, lookup, ctx, searcher);
         }
     }
 }

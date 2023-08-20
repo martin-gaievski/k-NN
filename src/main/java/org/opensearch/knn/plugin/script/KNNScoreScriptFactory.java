@@ -5,6 +5,7 @@
 
 package org.opensearch.knn.plugin.script;
 
+import org.apache.lucene.search.IndexSearcher;
 import org.opensearch.knn.plugin.stats.KNNCounter;
 import org.apache.lucene.index.LeafReaderContext;
 import org.opensearch.script.ScoreScript;
@@ -20,14 +21,16 @@ public class KNNScoreScriptFactory implements ScoreScript.LeafFactory {
     private String field;
     private Object query;
     private KNNScoringSpace knnScoringSpace;
+    private IndexSearcher searcher;
 
-    public KNNScoreScriptFactory(Map<String, Object> params, SearchLookup lookup) {
+    public KNNScoreScriptFactory(Map<String, Object> params, SearchLookup lookup, IndexSearcher searcher) {
         KNNCounter.SCRIPT_QUERY_REQUESTS.increment();
         this.params = params;
         this.lookup = lookup;
         this.field = getValue(params, "field").toString();
         this.similaritySpace = getValue(params, "space_type").toString();
         this.query = getValue(params, "query_value");
+        this.searcher = searcher;
 
         this.knnScoringSpace = KNNScoringSpaceFactory.create(
             this.similaritySpace,
@@ -60,6 +63,6 @@ public class KNNScoreScriptFactory implements ScoreScript.LeafFactory {
      */
     @Override
     public ScoreScript newInstance(LeafReaderContext ctx) throws IOException {
-        return knnScoringSpace.getScoreScript(params, field, lookup, ctx);
+        return knnScoringSpace.getScoreScript(params, field, lookup, ctx, this.searcher);
     }
 }
