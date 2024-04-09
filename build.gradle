@@ -17,10 +17,8 @@ buildscript {
         version_qualifier = System.getProperty("build.version_qualifier", "")
         opensearch_group = "org.opensearch"
         isSnapshot = "true" == System.getProperty("build.snapshot", "true")
-        simd_enabled = System.getProperty("simd.enabled", "true")
-        // Flag to determine whether cmake build system should apply patches and commit. In automated build environments
-        // set this to false. In dev environments, set to true
-        commit_lib_patches = System.getProperty("build.lib.commit_patches", "true")
+
+        simd_enabled = System.getProperty("simd.enabled", "false")
 
         version_tokens = opensearch_version.tokenize('-')
         opensearch_build = version_tokens[0] + '.0'
