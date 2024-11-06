@@ -81,13 +81,13 @@ set(BUILD_TESTING OFF)          # Avoid building faiss tests
 set(FAISS_ENABLE_GPU OFF)
 set(FAISS_ENABLE_PYTHON OFF)
 
-if(NOT DEFINED AVX2_ENABLED)
-    set(AVX2_ENABLED true)   # set default value as true if the argument is not set
-endif()
+#if(NOT DEFINED AVX2_ENABLED)
+#    set(AVX2_ENABLED true)   # set default value as true if the argument is not set
+#endif()
 
-if(NOT DEFINED AVX512_ENABLED)
-    set(AVX512_ENABLED true)   # set default value as true if the argument is not set
-endif()
+#if(NOT DEFINED AVX512_ENABLED)
+#    set(AVX512_ENABLED true)   # set default value as true if the argument is not set
+#endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL Windows OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64" OR ( NOT AVX2_ENABLED AND NOT AVX512_ENABLED))
     set(FAISS_OPT_LEVEL generic)    # Keep optimization level as generic on Windows OS as it is not supported due to MINGW64 compiler issue. Also, on aarch64 avx2 is not supported.
